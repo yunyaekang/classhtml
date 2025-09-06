@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>법인보험 전문 챗봇 | BoMam AI Advisor</title>
+  <meta name="description" content="법인 보험 컨설팅을 위한 전문 AI 챗봇 랜딩페이지. 즉시 상담, 서류 체크, 가입/유지/리스크 진단까지 한 번에." />
+  <style>
+    :root{
+      --bg:#0B1B3B;           /* 깊은 네이비(신뢰) */
+      --bg-soft:#0f244d;
+      --primary:#2C6AE3;      /* 액센트 블루 */
+      --primary-strong:#1f56c4;
+      --accent:#00D0A3;       /* 포인트 그린블루 */
+      --text:#0F172A;         /* 다크 텍스트 */
+      --muted:#718198;        /* 보조 텍스트 */
+      --card:#ffffff;         /* 카드 바탕 */
+      --line:#E6ECF5;
+      --shadow:0 10px 30px rgba(2,12,27,0.12);
+      --radius:20px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, Arial, Apple SD Gothic Neo, sans-serif; color:var(--text); background:#F6F8FC}
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+
+    /* 헤더 */
+    header{position:sticky; top:0; backdrop-filter:saturate(180%) blur(10px); background:rgba(246,248,252,0.8); border-bottom:1px solid var(--line); z-index:50}
+    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand-logo{width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg, var(--primary), var(--accent)); box-shadow:var(--shadow)}
+    .nav-actions{display:flex; align-items:center; gap:12px}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 16px; border-radius:12px; border:1px solid var(--line); background:#fff; font-weight:600}
+    .btn-primary{background:var(--primary); color:#fff; border-color:var(--primary);}
+    .btn-primary:hover{background:var(--primary-strong)}
+    .btn-ghost{background:transparent}
+
+    /* 히어로 */
+    .hero{background:radial-gradient(1200px 500px at 50% -50%, #1e3a8a33, transparent), linear-gradient(180deg, var(--bg), var(--bg-soft)); color:#fff; padding:72px 0 56px; position:relative; overflow:hidden}
+    .hero-inner{display:grid; grid-template-columns:1.2fr 1fr; gap:28px; align-items:center}
+    .kicker{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; font-size:12px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18)}
+    .hero h1{font-size:42px; line-height:1.12; margin:14px 0 14px}
+    .hero p{font-size:16px; color:#dbe7ff}
+    .hero-cta{display:flex; gap:10px; margin-top:18px}
+    .hero-card{background:#0d1f46; border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+    .hero-badges{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
+    .badge{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.2); color:#cfe2ff}
+
+    /* 신뢰 로고 */
+    .trust{padding:22px 0; background:#ffffff; border-bottom:1px solid var(--line)}
+    .trust-logos{display:flex; gap:22px; justify-content:center; align-items:center; flex-wrap:wrap}
+    .trust-logos span{height:30px; display:flex; align-items:center; color:#7586a0}
+
+    /* 섹션 공통 */
+    section{padding:56px 0}
+    .section-title{font-size:28px; margin:0 0 10px}
+    .section-sub{color:var(--muted); margin:0 0 22px}
+
+    /* 기능 카드 */
+    .grid{display:grid; gap:18px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .icon{width:36px; height:36px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; background:#EDF2FF; color:var(--primary); margin-bottom:10px}
+    .card h3{margin:6px 0 6px; font-size:18px}
+    .card p{margin:0; color:#4b5b71; font-size:14px}
+
+    /* 챗봇 데모 */
+    .demo{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+    .chat{background:#0b1220; color:#e6f0ff; border-radius:var(--radius); border:1px solid #14213d; overflow:hidden}
+    .chat-head{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:#0e1a34; border-bottom:1px solid #152245}
+    .chat-body{height:360px; overflow:auto; padding:16px;}
+    .msg{display:flex; gap:10px; margin-bottom:12px}
+    .msg.user{flex-direction:row-reverse}
+    .bubble{max-width:74%; padding:10px 12px; border-radius:14px; line-height:1.5; font-size:14px}
+    .bubble.ai{background:#0f2b5c; border:1px solid #143a7c}
+    .bubble.user{background:#12324f; border:1px solid #1b3e66}
+    .chat-input{display:flex; gap:8px; padding:12px; border-top:1px solid #152245; background:#0e1a34}
+    .chat-input input{flex:1; height:42px; padding:0 12px; border-radius:10px; border:1px solid #1c2f57; background:#0b1a33; color:#e6f0ff}
+    .chat-input button{height:42px; padding:0 16px; border-radius:10px; border:none; background:var(--accent); color:#002329; font-weight:700}
+    .embed-note{font-size:13px; color:var(--muted)}
+
+    /* FAQ */
+    details{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+    summary{cursor:pointer; font-weight:700}
+    details+details{margin-top:10px}
+
+    /* CTA */
+    .cta{background:linear-gradient(180deg, #0b1b3b, #0d285a); color:#fff; border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08)}
+    .cta .panel{display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center}
+
+    /* 푸터 */
+    footer{padding:28px 0; color:#70819b; background:#ffffff; border-top:1px solid var(--line)}
+    .foot-grid{display:grid; grid-template-columns:2fr 1fr 1fr; gap:20px}
+    .foot small{display:block; margin-top:10px}
+
+    /* 반응형 */
+    @media (max-width: 950px){
+      .hero-inner{grid-template-columns:1fr}
+      .grid.cols-3{grid-template-columns:1fr}
+      .demo{grid-template-columns:1fr}
+      .cta .panel{grid-template-columns:1fr}
+      .foot-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- 헤더 -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="brand-logo" aria-hidden="true"></span>
+        <span>BoMam AI Advisor</span>
+      </div>
+      <nav class="nav-actions">
+        <a href="#features" class="btn btn-ghost">기능</a>
+        <a href="#demo" class="btn btn-ghost">데모</a>
+        <a href="#contact" class="btn btn-primary">상담 요청</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="kicker">법인보험 전문 챗봇</span>
+        <h1>정확하고 빠른 <br />법인 리스크 진단과 제안서 자동화</h1>
+        <p>정관·주주구성·재무지표를 바탕으로 <b>키맨(임원) 보장</b>, <b>퇴직연금/복리후생</b>, <b>자금·상속 플랜</b>까지. 
+           준법 체크리스트와 문서 자동요약으로 영업/컨설팅 시간을 단축하세요.</p>
+        <div class="hero-cta">
+          <a href="#demo" class="btn btn-primary">무료 데모 시작</a>
+          <a href="#features" class="btn">기능 살펴보기</a>
+        </div>
+        <div class="hero-badges">
+          <span class="badge">문서 업로드 분석 (PDF/Excel)</span>
+          <span class="badge">개인정보 마스킹</span>
+          <span class="badge">요약 리포트 PDF</span>
+          <span class="badge">준법·보안 기준 충족</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img src="https://dummyimage.com/720x420/0f1e3b/89b3ff&text=16:9+Hero+Mock" alt="챗봇 데스크톱 미리보기" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 신뢰 로고 -->
+  <div class="trust">
+    <div class="container trust-logos" aria-label="trust-logos">
+      <span>• ISO/IEC 27001 기반 보안 정책</span>
+      <span>• 금융권 준법 가이드 준수</span>
+      <span>• 문서 비식별화 처리</span>
+    </div>
+  </div>
+
+  <!-- 핵심 기능 -->
+  <section id="features" class="container">
+    <h2 class="section-title">법인보험 컨설팅에 최적화된 기능</h2>
+    <p class="section-sub">영업 현장의 반복 업무는 자동화하고, 고객맞춤 제안의 핵심만 빠르게.</p>
+    <div class="grid cols-3">
+      <div class="card">
+        <div class="icon">📄</div>
+        <h3>문서 업로드·자동요약</h3>
+        <p>재무제표·정관·계약서 등을 업로드하면 주요 리스크와 보장 공백을 요약 리포트로 생성합니다.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3>개인정보 마스킹</h3>
+        <p>주민번호·연락처·계좌번호 등 민감정보를 자동 탐지·치환하여 안전한 컨설팅 환경을 제공합니다.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🧭</div>
+        <h3>설계 가이드 & RAG</h3>
+        <p>내부 약관·상품설명서를 지식기반(RAG)으로 연결, 최신 조건을 근거와 함께 제시합니다.</p>
+      </div>
+      <div class="card">
+        <div class="icon">👥</div>
+        <h3>키맨·주주보장 시나리오</h3>
+        <p>대표·핵심인력 리스크(질병/상해/부재)와 상속·승계 플랜을 다양한 시나리오로 비교합니다.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>세무·회계 체크</h3>
+        <p>보험료 처리, 손금산입, 퇴직급여충당 등 기본 체크리스트를 제시하고 주의사항을 안내합니다.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔗</div>
+        <h3>CRM/캘린더 연동</h3>
+        <p>미팅 일정, 진행단계, 후속 문서 발송까지 자동화 워크플로우를 지원합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 데모 & 임베드 영역 -->
+  <section id="demo" class="container">
+    <h2 class="section-title">라이브 데모</h2>
+    <p class="section-sub">아래 샘플 챗에 질문해 보세요. (실 서비스 연동 시 API 키와 보안 프록시 설정 필요)</p>
+    <div class="demo">
+      <!-- Chat UI Mock -->
+      <div class="chat" role="region" aria-label="챗봇 데모">
+        <div class="chat-head">
+          <strong>BoMam AI · 법인보험</strong>
+          <small style="color:#99b3ff">샘플 데모</small>
+        </div>
+        <div id="chatBody" class="chat-body" aria-live="polite"></div>
+        <div class="chat-input">
+          <input id="chatInput" type="text" placeholder="예) 우리 회사에 맞는 키맨보장 구성은?" />
+          <button id="sendBtn" type="button">전송</button>
+        </div>
+      </div>
+
+      <!-- 임베드 가이드 / 제품 하이라이트 -->
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <h3>실 서비스 임베드 방법</h3>
+          <p class="embed-note">다음 중 한 가지 방식으로 연결하세요.</p>
+          <ol style="margin:10px 0 0 18px; color:#4b5b71">
+            <li><b>iFrame</b> 임베드: 공급사 위젯 URL 제공 시 <code>&lt;iframe src="..."&gt;</code>로 삽입</li>
+            <li><b>Web Component</b>: <code>&lt;corp-insurance-chatbot&gt;</code> 형태로 커스텀 엘리먼트 배포</li>
+            <li><b>SDK 스니펫</b>: <code>&lt;script src="/bot.js" data-key="XXXX"&gt;</code> 방식</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>보안·준법</h3>
+          <ul style="margin:10px 0 0 18px; color:#4b5b71; line-height:1.8">
+            <li>전송구간 TLS 1.2+ / 저장 시 암호화(AES-256)</li>
+            <li>접근통제(역할기반 RBAC), 감사로그 보관</li>
+            <li>업로드 파일 자동 비식별화 및 보존기간 정책</li>
+            <li>모델 응답에 근거출처 표시 및 환각 차단 필터</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 활용 시나리오 -->
+  <section class="container">
+    <h2 class="section-title">현장 활용 시나리오</h2>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>① 초진단(5분)</h3>
+        <p>정관·주주 명부·간이 재무를 투입 → 보장 공백·우선순위 도출 → 미팅 아젠다 작성</p>
+      </div>
+      <div class="card">
+        <h3>② 제안서 자동화</h3>
+        <p>키맨/배상/단체보장 플랜 비교표·보험료 처리 가이드·FAQ PDF 자동 생성</p>
+      </div>
+      <div class="card">
+        <h3>③ 사후관리</h3>
+        <p>갱신/만기 알림, 약관 변경 모니터링, 중도해지 리스크 알림 및 대체안 제시</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="container">
+    <h2 class="section-title">자주 묻는 질문</h2>
+    <details>
+      <summary>업로드한 문서는 안전하게 보관되나요?</summary>
+      <div style="margin-top:10px; color:#4b5b71">업로드 즉시 비식별화 후 암호화 저장되며, 보존기간 정책(기본 30일) 이후 자동 파기 설정을 제공합니다.</div>
+    </details>
+    <details>
+      <summary>상품 약관은 어떻게 최신성을 보장하나요?</summary>
+      <div style="margin-top:10px; color:#4b5b71">사내 레퍼런스 저장소와 공개 공시를 주기적으로 동기화하고, 응답 시 근거 문단을 함께 제시합니다.</div>
+    </details>
+    <details>
+      <summary>우리 회사 시스템(CRM/그룹웨어)과 연동 가능한가요?</summary>
+      <div style="margin-top:10px; color:#4b5b71">Webhook·API 연동을 통해 일정, 알림, 문서 발송, 전자서명 등 워크플로우 자동화를 구성할 수 있습니다.</div>
+    </details>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container panel">
+      <div>
+        <h2 style="margin:0 0 6px">지금 바로 데모로 체험해 보세요</h2>
+        <p style="margin:0; color:#cfe2ff">파일 업로드 분석·요약 리포트·개인정보 마스킹까지. 현장 컨설팅 시간을 절약합니다.</p>
+      </div>
+      <a href="#contact" class="btn btn-primary" style="height:48px">상담 예약</a>
+    </div>
+  </section>
+
+  <!-- 문의 -->
+  <section id="contact" class="container">
+    <h2 class="section-title">문의하기</h2>
+    <p class="section-sub">데모 계정·도입 견적·API 연동 상담을 요청하세요.</p>
+    <form class="card" onsubmit="event.preventDefault(); alert('제출되었습니다. 빠르게 연락드리겠습니다.');">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+        <div>
+          <label>이름</label>
+          <input required type="text" placeholder="홍길동" style="width:100%; height:44px; padding:0 12px; border:1px solid var(--line); border-radius:10px" />
+        </div>
+        <div>
+          <label>이메일</label>
+          <input required type="email" placeholder="you@company.com" style="width:100%; height:44px; padding:0 12px; border:1px solid var(--line); border-radius:10px" />
+        </div>
+        <div>
+          <label>회사명</label>
+          <input type="text" placeholder="(주)보맘테크" style="width:100%; height:44px; padding:0 12px; border:1px solid var(--line); border-radius:10px" />
+        </div>
+        <div>
+          <label>연락처</label>
+          <input type="tel" placeholder="010-0000-0000" style="width:100%; height:44px; padding:0 12px; border:1px solid var(--line); border-radius:10px" />
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <label>요청사항</label>
+        <textarea rows="4" placeholder="도입 범위/연동 시스템/희망 일정 등" style="width:100%; padding:12px; border:1px solid var(--line); border-radius:10px"></textarea>
+      </div>
+      <div style="margin-top:12px; display:flex; justify-content:flex-end">
+        <button class="btn btn-primary" type="submit">보내기</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- 푸터 -->
+  <footer>
+    <div class="container foot">
+      <div class="foot-grid">
+        <div>
+          <strong>BoMam AI Advisor</strong>
+          <small>법인보험 컨설팅 자동화 · © <span id="year"></span></small>
+        </div>
+        <div>
+          <small>준법/보안</small>
+          <ul style="list-style:none; padding:0; margin:8px 0 0; line-height:1.9">
+            <li>데이터 암호화 · 접근통제 · 감사로그</li>
+            <li>개인정보 비식별화 · 보존/파기 정책</li>
+          </ul>
+        </div>
+        <div>
+          <small>문의</small>
+          <ul style="list-style:none; padding:0; margin:8px 0 0; line-height:1.9">
+            <li>이메일: contact@bomam.ai</li>
+            <li>전화: 010-5308-6815</li>
+          </ul>
+        </div>
+      </div>
+      <small style="display:block; margin-top:14px">* 본 페이지의 데모 챗은 예시 UI이며 실제 설계/판매는 각 보험사 및 대리점의 약관/내부 규정에 따릅니다.</small>
+    </div>
+  </footer>
+
+  <script>
+    // 연도 표기
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 간단한 데모 챗 로직 (프론트엔드 모의 응답)
+    const chatBody = document.getElementById('chatBody');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    const templates = [
+      {
+        q:/키맨|keyman|임원|대표/, 
+        a:`키맨보장 초안입니다.\n- 피보장자: 대표이사\n- 담보: 질병/상해 사망, 3대질병 진단비, 장해수당\n- 권고: 담보금액은 EBITDA의 1~2배, 납입기간 10~15년\n- 회계: 보험료 손금산입 가능 여부 검토 필요`
+      },
+      {
+        q:/정관|주주|승계|상속|지분/,
+        a:`지배구조 리스크 체크리스트입니다.\n1) 정관 상 상속/승계 조항 유무\n2) 공동대표·각자대표 여부\n3) 주주간계약 존재 여부\n4) 우선매수권/콜옵션 조항\n→ 부족 시 보장/자금 플랜 병행 권고`
+      },
+      {
+        q:/세무|손금|퇴직|충당|회계/,
+        a:`세무·회계 가이드 요약입니다.\n- 단체보장: 복리후생비 처리 요건 확인\n- 키맨보험: 손금산입/부인 여부 사전 검토\n- 퇴직연금: 부담금 한도 및 근속연수 기준 체크`
+      }
+    ];
+
+    function addMsg(text, role='ai'){
+      const wrap = document.createElement('div');
+      wrap.className = `msg ${role==='user' ? 'user' : ''}`;
+      const bubble = document.createElement('div');
+      bubble.className = `bubble ${role==='user' ? 'user' : 'ai'}`;
+      bubble.textContent = text;
+      wrap.appendChild(bubble);
+      chatBody.appendChild(wrap);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function reply(userText){
+      // 간단한 키워드 매칭 응답
+      const found = templates.find(t => t.q.test(userText));
+      const answer = found ? found.a : '요청을 이해했습니다. 업종/매출/인원/주주구성 등 기본 정보를 알려주시면 맞춤 초안을 제시하겠습니다.';
+      setTimeout(() => addMsg(answer, 'ai'), 400);
+    }
+
+    function send(){
+      const text = chatInput.value.trim();
+      if(!text) return;
+      addMsg(text, 'user');
+      chatInput.value = '';
+      reply(text);
+    }
+
+    sendBtn.addEventListener('click', send);
+    chatInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') send(); });
+
+    // 초기 메시지
+    addMsg('안녕하세요. 법인 리스크 요약·제안서 자동화를 도와드리는 BoMam AI입니다. 어떤 점이 궁금하신가요?');
+  </script>
+</body>
+</html>
